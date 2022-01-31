@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>BarbaSoft</Authors>
+    <Company>BarbaSoft</Company>
+    <PackageId>BarbaSoft.RPLidarA1</PackageId>
+    <Description>RPLidar A1 protocol</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>laser.png</PackageIcon>
+    <PackageIconUrl />
+    <PackageTags>Slamtec, RPLidar, A1, Protocol, Scan</PackageTags>
+    <PackageReleaseNotes>RPLidar A1 scan protocol. Use to read data from RPLidar A1 laser scanner</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\Desktop\laser.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
