@@ -11,6 +11,8 @@
     <PackageIconUrl />
     <PackageTags>Slamtec, RPLidar, A1, Protocol, Scan</PackageTags>
     <PackageReleaseNotes>RPLidar A1 scan protocol. Use to read data from RPLidar A1 laser scanner</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/BarbaSoft/RPLidarA1</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
