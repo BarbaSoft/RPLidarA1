@@ -47,6 +47,27 @@ namespace RPLidarA1
             if (seriale.IsOpen) seriale.Close();
         }
 
+        public void Reset() //Send reset command
+        {
+            string inviare;
+            inviare = "" + (char)0xA5 + (char)0x40;
+            Writeserial(inviare);
+            Thread.Sleep(5000);
+        }
+
+        public bool GetHealt()  //Retrive Healt
+        {
+            string inviare;
+            int pos;
+            inviare = "" + (char)0xA5 + (char)0x52;
+            Writeserial(inviare);
+            if (!ReadSerial1Shot()) return false;
+            pos = m_ricevuto.IndexOf(SYNC);
+            if (pos < 0) return false;
+            if (m_ricevuto.Substring((pos + 3), 3) != "\0\0\0") return false;
+            return true;
+        }
+
         public string SerialNum() //Retrive Info from Lidar
         {
             string inviare;
@@ -56,7 +77,21 @@ namespace RPLidarA1
             if (!ReadSerial1Shot()) return "";
             pos = m_ricevuto.IndexOf(SYNC);
             if (pos < 0) return "";
-            string info = "" + m_ricevuto.Substring(pos + 7);
+            string dato = "" + m_ricevuto.Substring(pos + 7);
+ 
+            int d = (int)dato.ElementAt(0);
+            string info = "Mod:" + d.ToString() + " Ver:";
+            d = (int)dato.ElementAt(2);
+            info += d.ToString() + ".";
+            d = (int)dato.ElementAt(1);
+            info += d.ToString() + " Hw:";
+            d = (int)dato.ElementAt(3);
+            info += d.ToString() + " Serial:";
+            for (int x = 4; x < dato.Length; x++)
+            {
+                d = (byte)dato.ElementAt(x);
+                info += d.ToString("X2") + " ";
+            }
             return info;
         }
 
@@ -93,6 +128,7 @@ namespace RPLidarA1
             }
             return true;
         }
+
         private bool Writeserial(string s) //Write to serial port
         {
             if (seriale.IsOpen == false) return false;
@@ -114,6 +150,23 @@ namespace RPLidarA1
             return true;
         }
 
+        public bool BoostScan()
+        {
+            if (seriale.IsOpen == false) return false;
+
+            seriale.DtrEnable = false; //Start Motor
+            if (!GetHealt()) // It's Alive ?
+            {
+                Reset(); //No, try Reset
+                if (!GetHealt())
+                {
+                    CloseSerial(); //Bad, close serial port
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
     }
 }
