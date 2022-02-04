@@ -23,6 +23,10 @@ namespace RPLidarA1
         static CancellationTokenSource source = new CancellationTokenSource();
         CancellationToken token = source.Token;
 
+        public int measure_second;
+        int ms;
+        Timer timer;
+
 
         public string[] FindSerialPorts() //Find Serial Ports on PC
         {
@@ -200,10 +204,22 @@ namespace RPLidarA1
             inviare = "" + (char)0xA5 + (char)0x82 + (char)0x05 + (char)0x02 + (char)0x00 + (char)0x00 + (char)0x00 + (char)0x00 + (char)0X20;
             Writeserial(inviare);
 
+            measure_second = 0; //Initialize mesure/second variable
+            ms = 0;
+            timer = new Timer(second, null, 1000, 1000); //Start Timer
             Main_Scan = new Thread(ReadSerial); //Start Scan Thread
             Main_Scan.Start();
 
             return true;
+        }
+
+        private void second(object state)  // Event timer every second
+        {
+            lock ((object)measure_second)
+            {
+                measure_second = ms;
+                ms = 0;
+            }
         }
 
         private void ReadSerial()
@@ -249,6 +265,8 @@ namespace RPLidarA1
         public void Stop_Scan()  //Stop Scan Thread
         {
             string inviare;
+            timer.Change(Timeout.Infinite, Timeout.Infinite);
+            timer.Dispose();
 
             if (Main_Scan != null && Main_Scan.IsAlive == true)
             {
@@ -372,7 +390,7 @@ namespace RPLidarA1
                 }
 
 
-                if (major != 0)
+                if (major != 0 && f1<=360)
                 {
                     measure = new Measure();
                     measure.X= (int)(major * (System.Math.Sin((Math.PI / 180) * f1)));
@@ -381,7 +399,8 @@ namespace RPLidarA1
                     measure.distance = major;
                     lock (Measure_List)
                     {
-                        Measure_List.Add(measure);
+                        Measure_List.Add(measure); //Add measure to list
+                        ms++; //increment measure number
                     }
                 }
 
@@ -393,7 +412,7 @@ namespace RPLidarA1
                 }
 
 
-                if (predict1 != 0)
+                if (predict1 != 0 && f1 <= 360)
                 {
                     measure = new Measure();
                     measure.X = (int)(predict1 * (System.Math.Sin((Math.PI / 180) * f1)));
@@ -402,7 +421,8 @@ namespace RPLidarA1
                     measure.distance = predict1;
                     lock (Measure_List)
                     {
-                        Measure_List.Add(measure);
+                        Measure_List.Add(measure); //Add measure to list
+                        ms++; //increment measure number
                     }
                 }
 
@@ -414,7 +434,7 @@ namespace RPLidarA1
                 }
 
 
-                if (predict2 != 0)
+                if (predict2 != 0 && f1 <= 360)
                 {
                     measure = new Measure();
                     measure.X = (int)(predict2 * (System.Math.Sin((Math.PI / 180) * f1)));
@@ -423,11 +443,15 @@ namespace RPLidarA1
                     measure.distance = predict2;
                     lock (Measure_List)
                     {
-                        Measure_List.Add(measure);
+                        Measure_List.Add(measure); //Add measure to list
+                        ms++; //increment measure number
                     }
                 }
 
-                //TODO Cancellare se la lista è maggiore di....
+                if (Measure_List.Count>100000) //Remove Mesure extra 100000 point
+                {
+                    Measure_List.RemoveRange(0, (Measure_List.Count-100000));
+                }
 
             }
         }
