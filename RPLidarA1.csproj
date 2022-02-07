@@ -13,6 +13,7 @@
     <PackageReleaseNotes>RPLidar A1 scan protocol with 8000 sample/sec. Use to read data from RPLidar A1 laser scanner.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/BarbaSoft/RPLidarA1</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
