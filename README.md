@@ -4,12 +4,12 @@ Dowload LidarExemple for exemple on use NuGet package
 
 Quickstart guide:
 
-//Create object and search serial ports avaiable
+//Create object and search serial ports avaiable//
 rplidar = new RPLidarA1class();
-string[] porte=rplidar.FindSerialPorts(); //Find serial ports
+string[] porte=rplidar.FindSerialPorts(); //Find serial ports//
 
-//Open Serial Port
-bool result=rplidar.ConnectSerial("COM1"); //Open Serial Port COM1
+//Open Serial Port//
+bool result=rplidar.ConnectSerial("COM1"); //Open Serial Port COM1//
 
 //Retrieve RPLidar Serial Number and Version
 string snum = rplidar.SerialNum(); //Get RPLidar Info
