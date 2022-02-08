@@ -4,22 +4,23 @@ Dowload LidarExemple for exemple on use NuGet package
 
 Quickstart guide:
 
-//Create object and search serial ports avaiable//
+//Create object and search serial ports avaiable
+
 rplidar = new RPLidarA1class();
-string[] porte=rplidar.FindSerialPorts(); //Find serial ports//
+string[] porte=rplidar.FindSerialPorts(); //Find serial ports
 
 //Open Serial Port//
 bool result=rplidar.ConnectSerial("COM1"); //Open Serial Port COM1//
 
 //Retrieve RPLidar Serial Number and Version
-string snum = rplidar.SerialNum(); //Get RPLidar Info
+   string snum = rplidar.SerialNum(); //Get RPLidar Info
 
 //Start Scan 8000 sample/second
-if (!rplidar.BoostScan()) //Start BoostScan
-   {
-        rplidar.CloseSerial(); //On scan error close serial port
-        return;
-   }
+   if (!rplidar.BoostScan()) //Start BoostScan
+      {
+           rplidar.CloseSerial(); //On scan error close serial port
+           return;
+       }
 
 //Create a timer and every ~500ms read rplidar.Measure_List.
 //Mesure_List contains at most 100000 sample (auto clear oldest).
