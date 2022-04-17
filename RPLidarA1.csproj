@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -14,7 +14,7 @@
 </PackageReleaseNotes>
     <RepositoryUrl>https://github.com/BarbaSoft/RPLidarA1</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <PackageProjectUrl>https://github.com/BarbaSoft/RPLidarA1</PackageProjectUrl>
     <NeutralLanguage>en-150</NeutralLanguage>
   </PropertyGroup>

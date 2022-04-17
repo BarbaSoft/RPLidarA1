@@ -20,8 +20,8 @@ namespace RPLidarA1
 
         Thread Main_Scan;
         // Define the cancellation token.
-        static CancellationTokenSource source = new CancellationTokenSource();
-        CancellationToken token = source.Token;
+        static CancellationTokenSource source;
+        CancellationToken token; 
 
         public int measure_second;
         int ms;
@@ -57,7 +57,12 @@ namespace RPLidarA1
 
         public void CloseSerial () //Close Serial Port
         {
-            if (seriale.IsOpen) seriale.Close();
+            if (seriale.IsOpen)
+            {
+                seriale.Close();
+                seriale.Dispose();
+                source.Dispose();
+            }
         }
 
         public void Reset() //Send reset command
@@ -207,6 +212,8 @@ namespace RPLidarA1
             measure_second = 0; //Initialize mesure/second variable
             ms = 0;
             timer = new Timer(second, null, 1000, 1000); //Start Timer
+            source = new CancellationTokenSource();
+            token = source.Token;
             Main_Scan = new Thread(ReadSerial); //Start Scan Thread
             Main_Scan.Start();
 
