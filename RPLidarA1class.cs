@@ -16,7 +16,8 @@ namespace RPLidarA1
         private int lbyte;
         int scalelvl;
         Measure measure;
-        public List<Measure> Measure_List; 
+        public List<Measure> Measure_List;
+        string serialport;
 
         Thread Main_Scan;
         // Define the cancellation token.
@@ -36,10 +37,12 @@ namespace RPLidarA1
 
         public bool ConnectSerial (string com) //Open Serial Port com 
         {
+            serialport = com;
             int baudrate = 115200;
             seriale = new SerialPort(com, baudrate, Parity.None, 8, StopBits.One);
             seriale.ReadTimeout = 1000;
             seriale.ReadBufferSize = 10000;
+            seriale.RtsEnable = true;
 
             try
             {
@@ -62,6 +65,16 @@ namespace RPLidarA1
                 seriale.Close();
                 seriale.Dispose();
                 source.Dispose();
+            }
+        }
+
+        public void StopMotor ()
+        {
+            if (seriale!=null && Main_Scan != null && Main_Scan.IsAlive == true)
+            {
+                Stop_Scan();
+                CloseSerial();
+                ConnectSerial(serialport);
             }
         }
 
