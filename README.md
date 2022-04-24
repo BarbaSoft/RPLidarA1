@@ -54,3 +54,19 @@ private void Timer_Tick(object sender, EventArgs e)  //Refresh mesure/second and
 rplidar.Stop_Scan(); //Stop Scan Thread
 rplidar.CloseSerial(); //Close serial port
 ```
+
+//Stop RPLidarA1 Motor
+```
+rplidar.StopMotor();
+timer.Stop(); //Stop refresh timer
+timer.Dispose();
+```
+//Restart RPLidarA1 Motor
+```
+   if (!rplidar.BoostScan()) //Start BoostScan
+      {
+           rplidar.CloseSerial(); //On scan error close serial port
+           return;
+       }
+       ...Restart your timer...
+```
